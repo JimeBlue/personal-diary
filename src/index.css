@@ -2,3 +2,7 @@
 @plugin "daisyui" {
   themes: light --default;
 }
+
+@theme {
+  --color-pink: #fbdbd7;
+}
