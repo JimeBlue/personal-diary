@@ -1,7 +1,9 @@
+import logo from "../assets/logo.png";
+
 const Navbar = () => {
   return (
     <nav className="navbar justify-center bg-pink">
-      <span className="text-2xl font-bold">MyDiary</span>
+      <img src={logo} alt="MyDiary logo" className="w-48" />
     </nav>
   );
 };
