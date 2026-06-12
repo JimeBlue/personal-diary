@@ -4,14 +4,17 @@ const DiaryContext = createContext();
 
 const DiaryProvider = ({ children }) => {
     const [isAddOpen, setIsAddOpen] = useState(false);
+    const [entries, setEntries] = useState([]);
 
-    // Named actions instead of exposing setIsAddOpen directly
+    // Named actions 
     const openAddModal = () => setIsAddOpen(true);
     const closeAddModal = () => setIsAddOpen(false);
 
+    const addEntry = (entry) => setEntries((prev) => [...prev, { ...entry, id: crypto.randomUUID() }]);
+
 
     return (
-        <DiaryContext.Provider value={{ isAddOpen, openAddModal, closeAddModal }}>
+        <DiaryContext.Provider value={{ isAddOpen, openAddModal, closeAddModal, entries, addEntry }}>
             {children}
         </DiaryContext.Provider>
     );
