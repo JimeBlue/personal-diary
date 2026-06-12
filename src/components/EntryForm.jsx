@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { useDiary } from "../context/DiaryContext";
 
-const initialFormData = { title: "", date: "", imageUrl: "", content: "" };
+// Today as a "YYYY-MM-DD" string in the user's local timezone.
+// (en-CA locale formats dates as YYYY-MM-DD, matching what input type="date" uses.)
+const today = new Date().toLocaleDateString("en-CA");
+
+const initialFormData = { title: "", date: today, imageUrl: "", content: "" };
 
 // Small helper component for showing a validation error under a field.
 // Takes the message for one field (e.g. errors.title) as a prop.
@@ -15,8 +19,20 @@ const FieldError = ({ message }) => {
 
 const EntryForm = () => {
     const [formData, setFormData] = useState(initialFormData);
-    const { closeAddModal, addEntry } = useDiary();
+    const { closeAddModal, addEntry, entries } = useDiary();
     const [errors, setErrors] = useState({});
+
+    // Derived during render — no extra state needed. Recomputed automatically
+    // on every keystroke, which is what makes the warning "live".
+    const hasEntryToday = entries.some((entry) => entry.date === today);
+
+    // One warning drives both the alert banner and the submit gate,
+    // so the UI and the logic can never disagree.
+    const dateWarning = hasEntryToday
+        ? "You already wrote an entry for today — come back tomorrow!"
+        : formData.date && formData.date !== today
+            ? "Entries can only be added for today."
+            : null;
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -43,6 +59,10 @@ const EntryForm = () => {
             setErrors(newErrors);
             return;
         };
+
+        // Same value that drives the alert banner — if a warning is showing,
+        // the submit is blocked too.
+        if (dateWarning) return;
 
         setErrors({});
         // pass the entry to the context and append it to entries
@@ -79,6 +99,12 @@ const EntryForm = () => {
                     />
                     <FieldError message={errors.date} />
                 </fieldset>
+
+                {dateWarning && (
+                    <div role="alert" className="alert alert-warning">
+                        <span>{dateWarning}</span>
+                    </div>
+                )}
                 <fieldset className="fieldset">
                     <legend className="fieldset-legend">Image</legend>
                     <input
