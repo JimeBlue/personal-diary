@@ -15,7 +15,7 @@ const FieldError = ({ message }) => {
 
 const EntryForm = () => {
     const [formData, setFormData] = useState(initialFormData);
-    const { closeAddModal } = useDiary();
+    const { closeAddModal, addEntry } = useDiary();
     const [errors, setErrors] = useState({});
 
     const handleChange = (event) => {
@@ -45,7 +45,11 @@ const EntryForm = () => {
         };
 
         setErrors({});
-        console.log(formData);
+        // pass the entry to the context and append it to entries
+        addEntry(formData);
+        // resets fields
+        setFormData(initialFormData);
+        closeAddModal()
     };
 
     return (
