@@ -1,19 +1,12 @@
 import { useDiary } from "../context/DiaryContext";
+import { formatDate } from "../utils/formatDate";
 
 const EntryDetails = () => {
     const { selectedEntry } = useDiary();
 
     if (!selectedEntry) return null;
 
-    const date = new Date(selectedEntry.date);
-
-    // Same date pieces as EntryCard: "12", "Fri" and "Jun 2026".
-    const dayNumber = String(date.getDate()).padStart(2, "0");
-    const weekday = date.toLocaleDateString("en-US", { weekday: "short" });
-    const monthYear = date.toLocaleDateString("en-US", {
-        month: "short",
-        year: "numeric",
-    });
+    const { dayNumber, weekday, monthYear } = formatDate(selectedEntry.date);
 
     return (
         <div className="flex flex-col gap-6">

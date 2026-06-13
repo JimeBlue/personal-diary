@@ -1,18 +1,11 @@
 import { useDiary } from "../context/DiaryContext";
+import { formatDate } from "../utils/formatDate";
 
 const EntryCard = ({ entry, index }) => {
-    const date = new Date(entry.date);
-
     // Alternate card colors by list position: even index → pink, odd → white.
     const cardColor = index % 2 === 0 ? "bg-pink" : "bg-white";
 
-    // "2026-06-12" → "12", "Fri" and "Jun 2026", shown as separate pieces.
-    const dayNumber = String(date.getDate()).padStart(2, "0");
-    const weekday = date.toLocaleDateString("en-US", { weekday: "short" });
-    const monthYear = date.toLocaleDateString("en-US", {
-        month: "short",
-        year: "numeric",
-    });
+    const { dayNumber, weekday, monthYear } = formatDate(entry.date);
 
     const { openViewModal } = useDiary();
     return (
