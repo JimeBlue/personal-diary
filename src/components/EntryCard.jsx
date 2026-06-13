@@ -11,9 +11,9 @@ const EntryCard = ({ entry, index }) => {
     return (
         <article onClick={() => openViewModal(entry)} className={`card ${cardColor} shadow-md hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02] transition duration-200 cursor-pointer`}>
             <div className="card-body gap-4">
-                <div className="flex items-center gap-3">
-                    <span className="font-pliant text-3xl font-bold text-navy">{dayNumber}</span>
-                    <span className="font-nunito text-sm text-navy">
+                <div className="badge badge-lg bg-yellow border-yellow text-navy gap-2 py-4 rounded-xl">
+                    <span className="font-pliant text-xl font-bold">{dayNumber}</span>
+                    <span className="font-nunito text-sm">
                         {weekday} - <span className="font-bold">{monthYear}</span>
                     </span>
                 </div>
@@ -28,7 +28,7 @@ const EntryCard = ({ entry, index }) => {
                     </figure>
                     <div>
                         <h3 className="card-title font-pliant text-navy line-clamp-2">{entry.title}</h3>
-                        <p className="font-nunito text-sm text-navy/80 line-clamp-3">
+                        <p className="font-nunito text-sm text-black line-clamp-3">
                             {entry.content}
                         </p>
                     </div>

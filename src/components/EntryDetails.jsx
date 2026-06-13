@@ -11,7 +11,7 @@ const EntryDetails = () => {
     return (
         <div className="flex flex-col gap-6">
 
-            <div className="badge badge-lg bg-pink border-pink text-navy gap-2 py-4  rounded-xl">
+            <div className="badge badge-lg bg-yellow border-yellow text-navy gap-2 py-4  rounded-xl">
                 <span className="font-pliant text-xl font-bold">{dayNumber}</span>
                 <span className="font-nunito text-sm">
                     {weekday} - <span className="font-bold">{monthYear}</span>
