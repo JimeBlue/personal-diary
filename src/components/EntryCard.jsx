@@ -1,3 +1,5 @@
+import { useDiary } from "../context/DiaryContext";
+
 const EntryCard = ({ entry, index }) => {
     const date = new Date(entry.date);
 
@@ -12,8 +14,9 @@ const EntryCard = ({ entry, index }) => {
         year: "numeric",
     });
 
+    const { openViewModal } = useDiary();
     return (
-        <article className={`card ${cardColor} shadow-md hover:shadow-xl transition-shadow duration-200 cursor-pointer`}>
+        <article onClick={() => openViewModal(entry)} className={`card ${cardColor} shadow-md hover:shadow-xl transition-shadow duration-200 cursor-pointer`}>
             <div className="card-body gap-4">
                 <div className="flex items-center gap-3">
                     <span className="font-pliant text-3xl font-bold text-navy">{dayNumber}</span>
