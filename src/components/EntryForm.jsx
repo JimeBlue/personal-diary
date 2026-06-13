@@ -58,7 +58,7 @@ const EntryForm = () => {
         if (!formData.title.trim()) newErrors.title = "Title is required.";
         if (!formData.date) newErrors.date = "Date is required.";
         if (!formData.imageUrl.trim()) {
-            newErrors.imageUrl = "ImageUrl is required.";
+            newErrors.imageUrl = "Image URL is required.";
         } else if (!isValidUrl(formData.imageUrl)) {
             newErrors.imageUrl = "Please enter a valid URL.";
         }
@@ -105,27 +105,29 @@ const EntryForm = () => {
 
     return (
         <section>
+            <h2 className="text-2xl font-bold text-navy mt-10">How was your day?</h2>
+            <p className="text-xs text-gray-500 mb-4 font-light">All fields are required.</p>
             <form onSubmit={handleSubmit} noValidate>
                 <fieldset className="fieldset">
-                    <legend className="fieldset-legend">Title</legend>
+                    <legend className="fieldset-legend text-navy">Title*</legend>
                     <input
                         type="text"
                         name="title"
                         value={formData.title}
                         onChange={handleChange}
-                        className="input w-full"
-                        placeholder="My day at the beach"
+                        className="input w-full border-navy/50 focus:outline-navy"
+                        placeholder="E.g. My day at the beach"
                     />
                     <FieldError message={errors.title} />
                 </fieldset>
                 <fieldset className="fieldset">
-                    <legend className="fieldset-legend">Date</legend>
+                    <legend className="fieldset-legend text-navy">Date*</legend>
                     <input
                         type="date"
                         name="date"
                         value={formData.date}
                         onChange={handleChange}
-                        className="input w-full"
+                        className="input w-full border-navy/50 focus:outline-navy"
                         placeholder="dd.mm.YYYY"
                     />
                     <FieldError message={errors.date} />
@@ -137,32 +139,43 @@ const EntryForm = () => {
                     </div>
                 )}
                 <fieldset className="fieldset">
-                    <legend className="fieldset-legend">Image</legend>
+                    <legend className="fieldset-legend text-navy">Image URL*</legend>
                     <input
                         type="url"
                         name="imageUrl"
                         value={formData.imageUrl}
                         onChange={handleChange}
-                        className="input w-full"
-                        placeholder="your image url"
+                        className="input w-full border-navy/50 focus:outline-navy"
+                        placeholder="Your image url"
                     />
                     <FieldError message={errors.imageUrl} />
                 </fieldset>
                 <fieldset className="fieldset">
-                    <legend className="fieldset-legend">Content</legend>
+                    <legend className="fieldset-legend text-navy">Content*</legend>
                     <textarea
                         name="content"
                         value={formData.content}
                         onChange={handleChange}
-                        className="textarea w-full h-32"
+                        className="textarea w-full h-32 border-navy/50 focus:outline-navy"
                         placeholder="Write about your day..."
                     />
                     <FieldError message={errors.content} />
                 </fieldset>
 
                 <div className="modal-action">
-                    <button type="button" className="btn" onClick={closeAddModal}>Cancel</button>
-                    <button type="submit" className="btn btn-primary">Submit</button>
+                    <button
+                        type="button"
+                        className="btn btn-outline w-32 text-navy border-navy hover:bg-yellow hover:text-navy hover:border-yellow"
+                        onClick={closeAddModal}
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        type="submit"
+                        className="btn bg-navy w-32 text-white border-navy hover:bg-yellow hover:text-navy hover:border-yellow"
+                    >
+                        Submit
+                    </button>
                 </div>
             </form>
 

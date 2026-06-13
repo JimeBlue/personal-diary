@@ -7,13 +7,13 @@ const AddEntryModal = () => {
     const { isAddOpen, closeAddModal } = useDiary();
     return (
         <div className={`modal ${isAddOpen ? "modal-open" : ""}`} role="dialog">
-            <div className="modal-box">
+            <div className="modal-box lg:max-w-5xl">
                 <button
                     onClick={closeAddModal}
                     className="btn btn-ghost group absolute right-2 top-2 hover:bg-transparent hover:border-transparent hover:shadow-none"
                     aria-label="Close"
                 >
-                    <FaTimes className="text-xl transition-transform duration-200 group-hover:scale-125 group-hover:-skew-x-6" />
+                    <FaTimes className="text-navy text-xl transition-transform duration-200 group-hover:scale-125 group-hover:-skew-x-6" />
                 </button>
                 <EntryForm />
             </div>
