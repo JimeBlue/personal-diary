@@ -1,5 +1,6 @@
 import { FaTimes } from "react-icons/fa";
 import { useDiary } from "../context/DiaryContext";
+import EntryDetails from "./EntryDetails";
 
 
 const EntryModal = () => {
@@ -15,7 +16,7 @@ const EntryModal = () => {
                 >
                     <FaTimes className="text-xl transition-transform duration-200 group-hover:scale-125 group-hover:-skew-x-6" />
                 </button>
-                <p>display Entry here</p>
+                <EntryDetails />
             </div>
             <div className="modal-backdrop" onClick={closeViewModal}></div>
         </div>
