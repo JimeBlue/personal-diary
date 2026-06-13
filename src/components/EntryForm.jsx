@@ -1,11 +1,25 @@
 import { useState } from "react";
+import { FaExclamationTriangle } from "react-icons/fa";
 import { useDiary } from "../context/DiaryContext";
+import AlreadyWroteToday from "./AlreadyWroteToday";
 
 // Today as a "YYYY-MM-DD" string in the user's local timezone.
 // (en-CA locale formats dates as YYYY-MM-DD, matching what input type="date" uses.)
 const today = new Date().toLocaleDateString("en-CA");
 
 const initialFormData = { title: "", date: today, imageUrl: "", content: "" };
+
+// True if the string parses as a real URL. I use the built-in URL constructor
+// instead of a regex: it throws on anything malformed, so a try/catch tells us
+// whether the value is valid. 
+const isValidUrl = (value) => {
+    try {
+        new URL(value);
+        return true;
+    } catch {
+        return false;
+    }
+};
 
 // Small helper component for showing a validation error under a field.
 // Takes the message for one field (e.g. errors.title) as a prop.
@@ -26,13 +40,12 @@ const EntryForm = () => {
     // on every keystroke, which is what makes the warning "live".
     const hasEntryToday = entries.some((entry) => entry.date === today);
 
-    // One warning drives both the alert banner and the submit gate,
-    // so the UI and the logic can never disagree.
-    const dateWarning = hasEntryToday
-        ? "You already wrote an entry for today — come back tomorrow!"
-        : formData.date && formData.date !== today
-            ? "Entries can only be added for today."
-            : null;
+    // Only fires for past/future dates. The "already wrote today" case is
+    // handled separately (we hide the form entirely), so it never competes
+    // with this warning.
+    const dateWarning = formData.date && formData.date !== today
+        ? "Entries can only be added for today."
+        : null;
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -46,7 +59,11 @@ const EntryForm = () => {
 
         if (!formData.title.trim()) newErrors.title = "Title is required.";
         if (!formData.date) newErrors.date = "Date is required.";
-        if (!formData.imageUrl.trim()) newErrors.imageUrl = "ImageUrl is required.";
+        if (!formData.imageUrl.trim()) {
+            newErrors.imageUrl = "Image URL is required.";
+        } else if (!isValidUrl(formData.imageUrl)) {
+            newErrors.imageUrl = "Please enter a valid URL.";
+        }
         if (!formData.content.trim()) newErrors.content = "Content is required.";
         return newErrors;
     };
@@ -72,66 +89,100 @@ const EntryForm = () => {
         closeAddModal()
     };
 
+    // If today's entry already exists there's nothing to fill in, so I replace
+    // the whole form with a message + a way out. This stops the user from
+    // completing fields that could never be submitted.
+    if (hasEntryToday) {
+        return (
+            <section>
+                <AlreadyWroteToday />
+                <div className="modal-action justify-center">
+                    <button
+                        type="button"
+                        className="btn bg-navy w-32 text-white border-navy hover:bg-yellow hover:text-navy hover:border-yellow"
+                        onClick={closeAddModal}
+                    >
+                        Got it
+                    </button>
+                </div>
+            </section>
+        );
+    }
+
     return (
         <section>
-            <form onSubmit={handleSubmit}>
+            <h2 className="text-2xl font-bold text-navy mt-10">How was your day?</h2>
+            <p className="text-xs text-gray-500 mb-4 font-light">All fields are required.</p>
+            <form onSubmit={handleSubmit} noValidate>
                 <fieldset className="fieldset">
-                    <legend className="fieldset-legend">Title</legend>
+                    <legend className="fieldset-legend text-navy">Title*</legend>
                     <input
                         type="text"
                         name="title"
                         value={formData.title}
                         onChange={handleChange}
-                        className="input w-full"
-                        placeholder="My day at the beach"
+                        className="input w-full border-navy/50 focus:outline-navy"
+                        placeholder="E.g. My day at the beach"
                     />
                     <FieldError message={errors.title} />
                 </fieldset>
                 <fieldset className="fieldset">
-                    <legend className="fieldset-legend">Date</legend>
+                    <legend className="fieldset-legend text-navy">Date*</legend>
                     <input
                         type="date"
                         name="date"
                         value={formData.date}
                         onChange={handleChange}
-                        className="input w-full"
+                        className="input w-full border-navy/50 focus:outline-navy"
                         placeholder="dd.mm.YYYY"
                     />
                     <FieldError message={errors.date} />
                 </fieldset>
 
                 {dateWarning && (
-                    <div role="alert" className="alert alert-warning">
+                    <div role="alert" className="alert bg-yellow text-black mt-3">
+                        <FaExclamationTriangle />
                         <span>{dateWarning}</span>
                     </div>
                 )}
                 <fieldset className="fieldset">
-                    <legend className="fieldset-legend">Image</legend>
+                    <legend className="fieldset-legend text-navy">Image URL*</legend>
                     <input
                         type="url"
                         name="imageUrl"
                         value={formData.imageUrl}
                         onChange={handleChange}
-                        className="input w-full"
-                        placeholder="your image url"
+                        className="input w-full border-navy/50 focus:outline-navy"
+                        placeholder="Your image url"
                     />
                     <FieldError message={errors.imageUrl} />
                 </fieldset>
                 <fieldset className="fieldset">
-                    <legend className="fieldset-legend">Content</legend>
+                    <legend className="fieldset-legend text-navy">Content*</legend>
                     <textarea
                         name="content"
                         value={formData.content}
                         onChange={handleChange}
-                        className="textarea w-full h-32"
+                        className="textarea w-full h-32 border-navy/50 focus:outline-navy"
                         placeholder="Write about your day..."
                     />
                     <FieldError message={errors.content} />
                 </fieldset>
 
                 <div className="modal-action">
-                    <button type="button" className="btn" onClick={closeAddModal}>Cancel</button>
-                    <button type="submit" className="btn btn-primary">Submit</button>
+                    <button
+                        type="button"
+                        className="btn btn-outline w-32 text-navy border-navy hover:bg-yellow hover:text-navy hover:border-yellow"
+                        onClick={closeAddModal}
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        type="submit"
+                        className="btn bg-navy w-32 text-white border-navy hover:bg-yellow hover:text-navy hover:border-yellow"
+                    >
+                        Submit
+                    </button>
                 </div>
             </form>
 
