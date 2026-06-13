@@ -38,13 +38,12 @@ const EntryForm = () => {
     // on every keystroke, which is what makes the warning "live".
     const hasEntryToday = entries.some((entry) => entry.date === today);
 
-    // One warning drives both the alert banner and the submit gate,
-    // so the UI and the logic can never disagree.
-    const dateWarning = hasEntryToday
-        ? "You already wrote an entry for today — come back tomorrow!"
-        : formData.date && formData.date !== today
-            ? "Entries can only be added for today."
-            : null;
+    // Only fires for past/future dates. The "already wrote today" case is
+    // handled separately (we hide the form entirely), so it never competes
+    // with this warning.
+    const dateWarning = formData.date && formData.date !== today
+        ? "Entries can only be added for today."
+        : null;
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -87,6 +86,22 @@ const EntryForm = () => {
         setFormData(initialFormData);
         closeAddModal()
     };
+
+    // If today's entry already exists there's nothing to fill in, so we replace
+    // the whole form with a message + a way out. This stops the user from
+    // completing fields that could never be submitted.
+    if (hasEntryToday) {
+        return (
+            <section>
+                <div role="alert" className="alert alert-warning">
+                    <span>You already wrote an entry for today — come back tomorrow!</span>
+                </div>
+                <div className="modal-action">
+                    <button type="button" className="btn" onClick={closeAddModal}>Close</button>
+                </div>
+            </section>
+        );
+    }
 
     return (
         <section>
