@@ -7,6 +7,8 @@ const storageKey = "entries";
 
 const DiaryProvider = ({ children }) => {
     const [isAddOpen, setIsAddOpen] = useState(false);
+    const [isViewOpen, setIsViewOpen] = useState(false);
+    const [selectedEntry, setSelectedEntry] = useState(null);
 
     // Lazy initializer (FR012): React calls this function only once, on the
     // first render, so the app starts already holding the stored entries.
@@ -28,9 +30,16 @@ const DiaryProvider = ({ children }) => {
 
     const addEntry = (entry) => setEntries((prev) => [...prev, { ...entry, id: crypto.randomUUID() }]);
 
+    const openViewModal = (entry) => {
+        setSelectedEntry(entry);
+        setIsViewOpen(true);
+    };
+
+    const closeViewModal = () => setIsViewOpen(false);
+
 
     return (
-        <DiaryContext.Provider value={{ isAddOpen, openAddModal, closeAddModal, entries, addEntry }}>
+        <DiaryContext.Provider value={{ isAddOpen, openAddModal, closeAddModal, entries, addEntry, isViewOpen, selectedEntry, openViewModal, closeViewModal }}>
             {children}
         </DiaryContext.Provider>
     );
