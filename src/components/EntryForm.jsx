@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FaExclamationTriangle } from "react-icons/fa";
 import { useDiary } from "../context/DiaryContext";
 
 // Today as a "YYYY-MM-DD" string in the user's local timezone.
@@ -134,7 +135,8 @@ const EntryForm = () => {
                 </fieldset>
 
                 {dateWarning && (
-                    <div role="alert" className="alert alert-warning">
+                    <div role="alert" className="alert bg-yellow text-black mt-3">
+                        <FaExclamationTriangle />
                         <span>{dateWarning}</span>
                     </div>
                 )}
