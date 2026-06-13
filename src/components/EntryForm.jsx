@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaExclamationTriangle } from "react-icons/fa";
 import { useDiary } from "../context/DiaryContext";
+import AlreadyWroteToday from "./AlreadyWroteToday";
 
 // Today as a "YYYY-MM-DD" string in the user's local timezone.
 // (en-CA locale formats dates as YYYY-MM-DD, matching what input type="date" uses.)
@@ -88,17 +89,21 @@ const EntryForm = () => {
         closeAddModal()
     };
 
-    // If today's entry already exists there's nothing to fill in, so we replace
+    // If today's entry already exists there's nothing to fill in, so I replace
     // the whole form with a message + a way out. This stops the user from
     // completing fields that could never be submitted.
     if (hasEntryToday) {
         return (
             <section>
-                <div role="alert" className="alert alert-warning">
-                    <span>You already wrote an entry for today — come back tomorrow!</span>
-                </div>
-                <div className="modal-action">
-                    <button type="button" className="btn" onClick={closeAddModal}>Close</button>
+                <AlreadyWroteToday />
+                <div className="modal-action justify-center">
+                    <button
+                        type="button"
+                        className="btn bg-navy w-32 text-white border-navy hover:bg-yellow hover:text-navy hover:border-yellow"
+                        onClick={closeAddModal}
+                    >
+                        Got it
+                    </button>
                 </div>
             </section>
         );
