@@ -15,7 +15,9 @@ const AddEntryModal = () => {
                 >
                     <FaTimes className="text-navy text-xl transition-transform duration-200 group-hover:scale-125 group-hover:-skew-x-6" />
                 </button>
-                <EntryForm />
+                {/* Only mount the form while the modal is open, so each open
+                    starts with a brand-new form (fresh, empty state). */}
+                {isAddOpen && <EntryForm />}
             </div>
             <div className="modal-backdrop" onClick={closeAddModal}></div>
         </div>
