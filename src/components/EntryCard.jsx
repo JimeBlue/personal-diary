@@ -1,19 +1,15 @@
-const EntryCard = ({ entry, index }) => {
-    const date = new Date(entry.date);
+import { useDiary } from "../context/DiaryContext";
+import { formatDate } from "../utils/formatDate";
 
+const EntryCard = ({ entry, index }) => {
     // Alternate card colors by list position: even index → pink, odd → white.
     const cardColor = index % 2 === 0 ? "bg-pink" : "bg-white";
 
-    // "2026-06-12" → "12", "Fri" and "Jun 2026", shown as separate pieces.
-    const dayNumber = String(date.getDate()).padStart(2, "0");
-    const weekday = date.toLocaleDateString("en-US", { weekday: "short" });
-    const monthYear = date.toLocaleDateString("en-US", {
-        month: "short",
-        year: "numeric",
-    });
+    const { dayNumber, weekday, monthYear } = formatDate(entry.date);
 
+    const { openViewModal } = useDiary();
     return (
-        <article className={`card ${cardColor} shadow-md hover:shadow-xl transition-shadow duration-200 cursor-pointer`}>
+        <article onClick={() => openViewModal(entry)} className={`card ${cardColor} shadow-md hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02] transition duration-200 cursor-pointer`}>
             <div className="card-body gap-4">
                 <div className="flex items-center gap-3">
                     <span className="font-pliant text-3xl font-bold text-navy">{dayNumber}</span>
