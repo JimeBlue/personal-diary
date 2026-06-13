@@ -9,7 +9,7 @@ const EntryCard = ({ entry, index }) => {
 
     const { openViewModal } = useDiary();
     return (
-        <article onClick={() => openViewModal(entry)} className={`card ${cardColor} shadow-md hover:shadow-xl transition-shadow duration-200 cursor-pointer`}>
+        <article onClick={() => openViewModal(entry)} className={`card ${cardColor} shadow-md hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02] transition duration-200 cursor-pointer`}>
             <div className="card-body gap-4">
                 <div className="flex items-center gap-3">
                     <span className="font-pliant text-3xl font-bold text-navy">{dayNumber}</span>

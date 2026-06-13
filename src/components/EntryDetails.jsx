@@ -10,16 +10,18 @@ const EntryDetails = () => {
 
     return (
         <div className="flex flex-col gap-6">
-            {/* First row: date + title */}
-            <div className="flex items-center gap-3">
-                <span className="font-pliant text-3xl font-bold text-navy">{dayNumber}</span>
-                <span className="font-nunito text-sm text-navy">
+
+            <div className="badge badge-lg bg-pink border-pink text-navy gap-2 py-4  rounded-xl">
+                <span className="font-pliant text-xl font-bold">{dayNumber}</span>
+                <span className="font-nunito text-sm">
                     {weekday} - <span className="font-bold">{monthYear}</span>
                 </span>
-                <h2 className="font-pliant text-navy text-2xl line-clamp-2">{selectedEntry.title}</h2>
             </div>
 
-            {/* Second row: 1 col by default, 2 cols from lg */}
+
+            <h2 className="font-pliant text-navy text-2xl">{selectedEntry.title}</h2>
+
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <figure className="overflow-hidden rounded-xl">
                     <img
@@ -28,7 +30,7 @@ const EntryDetails = () => {
                         className="w-full h-full object-cover"
                     />
                 </figure>
-                <p className="font-nunito text-navy/80 whitespace-pre-line">
+                <p className="font-nunito text-black whitespace-pre-line font-normal">
                     {selectedEntry.content}
                 </p>
             </div>
