@@ -7,6 +7,18 @@ const today = new Date().toLocaleDateString("en-CA");
 
 const initialFormData = { title: "", date: today, imageUrl: "", content: "" };
 
+// True if the string parses as a real URL. I use the built-in URL constructor
+// instead of a regex: it throws on anything malformed, so a try/catch tells us
+// whether the value is valid. 
+const isValidUrl = (value) => {
+    try {
+        new URL(value);
+        return true;
+    } catch {
+        return false;
+    }
+};
+
 // Small helper component for showing a validation error under a field.
 // Takes the message for one field (e.g. errors.title) as a prop.
 // If there's no message (undefined), it returns null — that's how a React
@@ -46,7 +58,11 @@ const EntryForm = () => {
 
         if (!formData.title.trim()) newErrors.title = "Title is required.";
         if (!formData.date) newErrors.date = "Date is required.";
-        if (!formData.imageUrl.trim()) newErrors.imageUrl = "ImageUrl is required.";
+        if (!formData.imageUrl.trim()) {
+            newErrors.imageUrl = "ImageUrl is required.";
+        } else if (!isValidUrl(formData.imageUrl)) {
+            newErrors.imageUrl = "Please enter a valid URL.";
+        }
         if (!formData.content.trim()) newErrors.content = "Content is required.";
         return newErrors;
     };
@@ -74,7 +90,7 @@ const EntryForm = () => {
 
     return (
         <section>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} noValidate>
                 <fieldset className="fieldset">
                     <legend className="fieldset-legend">Title</legend>
                     <input
